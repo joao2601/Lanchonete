@@ -33,14 +33,55 @@ namespace Lanchonete
         private void button1_Click(object sender, EventArgs e)
         {
             {
-                MessageBox.Show(textBox1.Text + "\n" + textBox2.Text,
-                             "ATENÇÃO",
+                MessageBox.Show(textBox1.Text + "\n" + email.Text + "\n" + textBox3.Text + "\n" + maskedTextBox1.Text + "\n" + maskedTextBox2.Text
+                    ,
+                             "CADASTRADO, BB.",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Information
 
 
                     ); 
             }
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void maskedTextBox2_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
