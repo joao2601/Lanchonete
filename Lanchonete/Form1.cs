@@ -54,11 +54,18 @@ namespace Lanchonete
 
 
 
-                MessageBox.Show(textBox1.Text + "\n" + email.Text + "\n" + textBox3.Text + "\n" + maskedTextBox1.Text + "\n" + maskedTextBox2.Text
-                    ,
+                MessageBox.Show ("Cadastrado com sucesso",
+                    
                              "CADASTRADO, BB.",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Information);
+
+                textBox1.Clear();
+                email.Clear();   
+                textBox3.Clear();
+                maskedTextBox1.Clear();
+                maskedTextBox2.Clear(); 
+
 
             }
         }
