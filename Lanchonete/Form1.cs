@@ -238,7 +238,5 @@ namespace Lanchonete
 
                 UpdateListView();
             }
-
-        }
     }
 }
