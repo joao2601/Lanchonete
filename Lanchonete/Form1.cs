@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lanchonete.Lanchonete;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -32,7 +33,7 @@ namespace Lanchonete
         {
             listView1.Items.Clear();
 
-           conexao conn = new conexao();
+            conexao conn = new conexao();
             SqlCommand sqlCom = new SqlCommand();
 
             sqlCom.Connection = conn.ReturnConnection();
@@ -48,13 +49,17 @@ namespace Lanchonete
                     int id = (int)dr["id"];
                     string name = (string)dr["Nome"];
                     string email = (string)dr["email"];
-                    string cpf = (string)dr["senha"];
+                    string senha = (string)dr["senha"];
                     string telefone = (string)dr["telefone"];
-                   
+                    string cpf = (string)dr["cpf"];
+
                     ListViewItem lv = new ListViewItem(id.ToString());
                     lv.SubItems.Add(name);
                     lv.SubItems.Add(email);
+                    lv.SubItems.Add(senha);
+                    lv.SubItems.Add(telefone);
                     lv.SubItems.Add(cpf);
+                   
                     listView1.Items.Add(lv);
 
                 }
@@ -69,11 +74,6 @@ namespace Lanchonete
                 conn.CloseConnection();
             }
         }
-    
-
-
-
-
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
@@ -81,40 +81,41 @@ namespace Lanchonete
 
         private void button1_Click(object sender, EventArgs e)
         {
+            try
             {
-                conexao connection = new conexao();
-                SqlCommand sqlCommand = new SqlCommand();
+                // criar objeto da classe usuario
+                Usuario usuario = new Usuario(
+                     textBox1.Text,
+                     email.Text,
+                     textBox3.Text,
+                     maskedTextBox1.Text,
+                     maskedTextBox2.Text);
 
-                sqlCommand.Connection = connection.ReturnConnection();
-                sqlCommand.CommandText = @"INSERT INTO Cadastro VALUES(@Nome, @Email, @Senha, @Telefone, @Cpf)";
+                usuarioDao usuarioDao = new usuarioDao();
+                usuarioDao.InsertUsuario(usuario);
+                MessageBox.Show("Cadastrado com sucesso",
 
-                sqlCommand.Parameters.AddWithValue("@Nome", textBox1.Text);
-                sqlCommand.Parameters.AddWithValue("@Email", email.Text);
-                sqlCommand.Parameters.AddWithValue("@Senha", textBox3.Text);
-                sqlCommand.Parameters.AddWithValue("@Telefone", maskedTextBox1.Text);
-                sqlCommand.Parameters.AddWithValue("@Cpf", maskedTextBox2.Text);
-
-                sqlCommand.ExecuteNonQuery();
-
-
-
-
-
-
-                MessageBox.Show ("Cadastrado com sucesso",
-                    
                              "CADASTRADO, BB.",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Information);
 
                 textBox1.Clear();
-                email.Clear();   
+                email.Clear();
                 textBox3.Clear();
                 maskedTextBox1.Clear();
-                maskedTextBox2.Clear(); 
+                maskedTextBox2.Clear();
 
+                UpdateListView();
 
             }
+
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+
+            
+
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -164,28 +165,7 @@ namespace Lanchonete
 
         private void button2_Click(object sender, EventArgs e)
         {
-            conexao connection = new conexao();
-            SqlCommand sqlCommand = new SqlCommand();
-
-            sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = @"UPDATE  Cadastro SET
-               Nome = @textBox1.Text,
-               Email = @email.Text,
-               Senha = @textBox3.Text,
-               Telefone = @maskedTextBox1.Text,
-               Cpf = @maskedTextBox2.Text
-               WHERE Id = @Id";
-
-            sqlCommand.Parameters.AddWithValue("@Nome", textBox1.Text);
-            sqlCommand.Parameters.AddWithValue("@Email", email.Text);
-            sqlCommand.Parameters.AddWithValue("@Senha", textBox3.Text);
-            sqlCommand.Parameters.AddWithValue("@Telefone", maskedTextBox1.Text);
-            sqlCommand.Parameters.AddWithValue("@Cpf", maskedTextBox2.Text);
-            sqlCommand.Parameters.AddWithValue("@Id", Id);
-
-
-            sqlCommand.ExecuteNonQuery();
-
+            UpdateListView();
 
         }
 
@@ -199,8 +179,8 @@ namespace Lanchonete
             textBox3.Text = listView1.Items[index].SubItems[3].Text;
             maskedTextBox1.Text = listView1.Items[index].SubItems[4].Text;
             maskedTextBox2.Text = listView1.Items[index].SubItems[5].Text;
-           
 
+            UpdateListView();
 
 
         }
@@ -213,30 +193,12 @@ namespace Lanchonete
         private void button3_Click(object sender, EventArgs e)
         {
             //Código para excluir
-            conexao connection = new conexao();
-            SqlCommand sqlCommand = new SqlCommand();
-
-            sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = @"DELETE FROM Usuarios WHERE Id = @id";
-            sqlCommand.Parameters.AddWithValue("@id", Id);
-            try
             {
-                sqlCommand.ExecuteNonQuery();
-            }
-            catch (Exception err)
-            {
-                throw new Exception("Erro: Problemas ao excluir usuário no banco.\n" + err.Message);
-            }
-            finally
-            {
-                connection.CloseConnection();
-                textBox1.Clear();
-                email.Clear();
-                textBox3.Clear();
-                maskedTextBox1.Clear();
-                maskedTextBox2.Clear();
-
                 UpdateListView();
             }
+
+        }
     }
 }
+
+
