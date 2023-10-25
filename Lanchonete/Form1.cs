@@ -33,33 +33,22 @@ namespace Lanchonete
         {
             listView1.Items.Clear();
 
-            conexao conn = new conexao();
-            SqlCommand sqlCom = new SqlCommand();
+            usuarioDao usuarioDao = new usuarioDao();
+            List<Usuario> usuarios = usuarioDao.SelectUsuario();
 
-            sqlCom.Connection = conn.ReturnConnection();
-            sqlCom.CommandText = "SELECT * FROM Cadastro";
+           
 
             try
             {
-                SqlDataReader dr = sqlCom.ExecuteReader();
+                foreach (Usuario usuario in usuarios)
+                { 
+                    ListViewItem lv = new ListViewItem(usuario Id.ToString());
+                    lv.SubItems.Add(usuario.Nome);
+                    lv.SubItems.Add(usuario.Email);
+                    lv.SubItems.Add(usuario.Senha);
+                    lv.SubItems.Add(usuario.Telefone);
+                    lv.SubItems.Add(usuario.Cpf);
 
-                //Enquanto for possível continuar a leitura das linhas que foram retornadas na consulta, execute.
-                while (dr.Read())
-                {
-                    int id = (int)dr["id"];
-                    string name = (string)dr["Nome"];
-                    string email = (string)dr["email"];
-                    string senha = (string)dr["senha"];
-                    string telefone = (string)dr["telefone"];
-                    string cpf = (string)dr["cpf"];
-
-                    ListViewItem lv = new ListViewItem(id.ToString());
-                    lv.SubItems.Add(name);
-                    lv.SubItems.Add(email);
-                    lv.SubItems.Add(senha);
-                    lv.SubItems.Add(telefone);
-                    lv.SubItems.Add(cpf);
-                   
                     listView1.Items.Add(lv);
 
                 }
@@ -114,7 +103,7 @@ namespace Lanchonete
                 MessageBox.Show(error.Message);
             }
 
-            
+
 
         }
 
@@ -180,7 +169,7 @@ namespace Lanchonete
             maskedTextBox1.Text = listView1.Items[index].SubItems[4].Text;
             maskedTextBox2.Text = listView1.Items[index].SubItems[5].Text;
 
-            UpdateListView();
+
 
 
         }

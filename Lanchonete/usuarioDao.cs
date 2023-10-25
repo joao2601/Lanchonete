@@ -21,7 +21,7 @@ namespace Lanchonete
 
             sqlCom.Connection = conn.ReturnConnection();
             sqlCom.CommandText = "SELECT * FROM Cadastro";
-
+            List<Usuario> usuarios = new List<Usuario>();
             try
             {
                 SqlDataReader dr = sqlCom.ExecuteReader();
@@ -30,25 +30,29 @@ namespace Lanchonete
                 while (dr.Read())
                 {
                     Usuario objeto = new Usuario(
-                    (int)   dr["id"],
+                    (int)dr["id"],
                     (string)dr["Nome"],
                     (string)dr["Email"],
                     (string)dr["Senha"],
                     (string)dr["Telefone"],
                     (string)dr["Cpf"]
                     );
+                        usuarios.Add(objeto);
 
                 }
                 dr.Close();
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message);
+                throw new Exception("Erro na leitura dos dados\n"
+                    + err.Message);
+                // MessageBox.Show(err.Message);
             }
             finally
             {
                 conn.CloseConnection();
             }
+            return usuarios;
         }
         public void InsertUsuario(Usuario usuario)
         {
