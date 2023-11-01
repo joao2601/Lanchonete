@@ -85,11 +85,11 @@ namespace Lanchonete
 
             sqlCommand.Connection = connection.ReturnConnection();
             sqlCommand.CommandText = @"UPDATE  Cadastro SET
-               Nome = @textBox1.Text,
-               Email = @email.Text,
-               Senha = @textBox3.Text,
-               Telefone = @maskedTextBox1.Text,
-               Cpf = @maskedTextBox2.Text
+               Nome = @Nome,
+               Email = @Email,
+               Senha = @Senha,
+               Telefone = @Telefone,
+               Cpf = @Cpf
                WHERE Id = @Id"
             ;
 
@@ -106,29 +106,17 @@ namespace Lanchonete
 
         }
 
-        public void excluirUsuario(Usuario usuario)
+        public void excluirUsuario(int Id)
         {
             conexao connection = new conexao();
             SqlCommand sqlCommand = new SqlCommand();
 
             sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = @"DELETE FROM Cadastro SET 
-            
-               Nome = @textBox1.Text,
-               Email = @email.Text,
-               Senha = @textBox3.Text,
-               Telefone = @maskedTextBox1.Text,
-               Cpf = @maskedTextBox2.Text
+            sqlCommand.CommandText = @"DELETE FROM Cadastro 
                WHERE Id = @Id";
 
-            sqlCommand.Parameters.AddWithValue("@Nome", usuario.Nome);
-            sqlCommand.Parameters.AddWithValue("@Email", usuario.Email);
-            sqlCommand.Parameters.AddWithValue("@Senha", usuario.Senha);
-            sqlCommand.Parameters.AddWithValue("@Telefone", usuario.Telefone);
-            sqlCommand.Parameters.AddWithValue("@Cpf", usuario.Cpf);
-            sqlCommand.Parameters.AddWithValue("@Id", usuario.Id);
+            sqlCommand.Parameters.AddWithValue("@Id",Id);
 
-            sqlCommand.ExecuteNonQuery();
 
             try
             {

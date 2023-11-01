@@ -41,8 +41,8 @@ namespace Lanchonete
             try
             {
                 foreach (Usuario usuario in usuarios)
-                { 
-                    ListViewItem lv = new ListViewItem(usuario Id.ToString());
+                {
+                    ListViewItem lv = new ListViewItem(usuario.Id.ToString());
                     lv.SubItems.Add(usuario.Nome);
                     lv.SubItems.Add(usuario.Email);
                     lv.SubItems.Add(usuario.Senha);
@@ -52,16 +52,13 @@ namespace Lanchonete
                     listView1.Items.Add(lv);
 
                 }
-                dr.Close();
+               
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
             }
-            finally
-            {
-                conn.CloseConnection();
-            }
+         
         }
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
@@ -154,6 +151,36 @@ namespace Lanchonete
 
         private void button2_Click(object sender, EventArgs e)
         {
+            try
+            {
+                // criar objeto da classe usuario
+                Usuario usuario = new Usuario(
+                     textBox1.Text,
+                     email.Text,
+                     textBox3.Text,
+                     maskedTextBox1.Text,
+                     maskedTextBox2.Text);
+
+                usuarioDao usuarioDao = new usuarioDao();
+                usuarioDao.editarUsuario(usuario);
+               
+
+                textBox1.Clear();
+                email.Clear();
+                textBox3.Clear();
+                maskedTextBox1.Clear();
+                maskedTextBox2.Clear();
+
+                UpdateListView();
+
+            }
+
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+
+
             UpdateListView();
 
         }
@@ -182,9 +209,12 @@ namespace Lanchonete
         private void button3_Click(object sender, EventArgs e)
         {
             //Código para excluir
-            {
-                UpdateListView();
-            }
+            usuarioDao usuarioDao = new usuarioDao();
+            usuarioDao.excluirUsuario(Id);
+         
+            
+            UpdateListView();
+            
 
         }
     }
