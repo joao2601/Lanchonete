@@ -14,6 +14,39 @@ namespace Lanchonete
 {
     internal class usuarioDao
     {
+        public bool Login (string usuario, string senha)
+        {
+            conexao conn = new conexao();
+            SqlCommand sqlCom = new SqlCommand();
+
+            sqlCom.Connection = conn.ReturnConnection();
+            sqlCom.CommandText = "SELECT * FROM Cadastro";
+        
+            try
+            {
+                SqlDataReader dr = sqlCom.ExecuteReader();
+
+                if  (dr.HasRows)
+                    {
+                       dr.Close();
+                    return true;
+                    }
+              
+                dr.Close();
+              
+            }
+            catch (Exception err)
+            {
+                throw new Exception("Erro na leitura dos dados\n"
+                    + err.Message);
+                // MessageBox.Show(err.Message);
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
+            return false;
+        }
         public List<Usuario> SelectUsuario()
         {
             conexao conn = new conexao();
@@ -37,7 +70,7 @@ namespace Lanchonete
                     (string)dr["Telefone"],
                     (string)dr["Cpf"]
                     );
-                        usuarios.Add(objeto);
+                    usuarios.Add(objeto);
 
                 }
                 dr.Close();
