@@ -19,9 +19,15 @@ namespace Lanchonete
     public partial class Form1 : Form
     {
         private int Id;
-        public Form1()
+        public Form1(int op)
         {
             InitializeComponent();
+            if (op == 0)
+            {
+                button2.Visible = false;
+                button3.Visible = false;
+                listView1.Visible = false;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -155,7 +161,8 @@ namespace Lanchonete
             {
                 // criar objeto da classe usuario
                 Usuario usuario = new Usuario(
-                     textBox1.Text,
+                    Id, 
+                    textBox1.Text,
                      email.Text,
                      textBox3.Text,
                      maskedTextBox1.Text,
@@ -195,9 +202,6 @@ namespace Lanchonete
             textBox3.Text = listView1.Items[index].SubItems[3].Text;
             maskedTextBox1.Text = listView1.Items[index].SubItems[4].Text;
             maskedTextBox2.Text = listView1.Items[index].SubItems[5].Text;
-
-
-
 
         }
 

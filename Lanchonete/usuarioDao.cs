@@ -20,8 +20,12 @@ namespace Lanchonete
             SqlCommand sqlCom = new SqlCommand();
 
             sqlCom.Connection = conn.ReturnConnection();
-            sqlCom.CommandText = "SELECT * FROM Cadastro";
+            sqlCom.CommandText = "SELECT * FROM Cadastro" +
+                "   Where Nome = @nome and Senha = @senha";
+            sqlCom.Parameters.AddWithValue("@nome", usuario);
+            sqlCom.Parameters.AddWithValue("@senha", senha);
         
+            
             try
             {
                 SqlDataReader dr = sqlCom.ExecuteReader();

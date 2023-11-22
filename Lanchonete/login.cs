@@ -30,7 +30,7 @@ namespace Lanchonete
             
             if (user.Login(usuario, senha))
             {
-                Form1 tela = new Form1();   
+                Form1 tela = new Form1(1);   
                 tela.ShowDialog();
             }
             else
@@ -50,6 +50,8 @@ namespace Lanchonete
         private void button2_Click(object sender, EventArgs e)
         {
 
+            Form1 tela = new Form1(0);
+            tela.ShowDialog();
         }
     }
 }

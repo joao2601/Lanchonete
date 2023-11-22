@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Lanchonete
 {
-    public partial class Form2 : Form
+    public partial class principal : Form
     {
-        public Form2()
+        public principal()
         {
             InitializeComponent();
         }
