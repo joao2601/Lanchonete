@@ -59,9 +59,9 @@
             this.nome.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.nome.Location = new System.Drawing.Point(292, 188);
             this.nome.Name = "nome";
-            this.nome.Size = new System.Drawing.Size(39, 13);
+            this.nome.Size = new System.Drawing.Size(32, 13);
             this.nome.TabIndex = 3;
-            this.nome.Text = "NOME";
+            this.nome.Text = "Email";
             // 
             // label1
             // 

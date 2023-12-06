@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lanchonete.Lanchonete;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,22 +25,12 @@ namespace Lanchonete
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string usuario = textBox1.Text;
-            string senha = textBox2.Text;   
-            usuarioDao user = new usuarioDao();
-            
-            if (user.Login(usuario, senha))
-            {
-                Form1 tela = new Form1(1);   
-                tela.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("Verifique os dados inseridos!",
-                    "erro",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            Usuario usuario = new Usuario("Nome", "Email", "Senha", "Telefone", "CPF");
+            usuario.Email = textBox1.Text;
+            usuario.Senha = Criptografia.CriptografarSenha(textBox2.Text);
+
+            usuarioDao usuarioDAO = new usuarioDao();
+            usuarioDAO.loginUsuario(usuario);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -51,7 +42,7 @@ namespace Lanchonete
         {
 
             Form1 tela = new Form1(0);
-            tela.ShowDialog();
+            tela.Show();
         }
     }
 }

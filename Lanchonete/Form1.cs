@@ -22,14 +22,8 @@ namespace Lanchonete
         public Form1(int op)
         {
             InitializeComponent();
-            if (op == 0)
-            {
-                button2.Visible = false;
-                button3.Visible = false;
-                listView1.Visible = false;
-            }
-        }
 
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             UpdateListView();
@@ -41,9 +35,6 @@ namespace Lanchonete
 
             usuarioDao usuarioDao = new usuarioDao();
             List<Usuario> usuarios = usuarioDao.SelectUsuario();
-
-           
-
             try
             {
                 foreach (Usuario usuario in usuarios)
@@ -58,13 +49,13 @@ namespace Lanchonete
                     listView1.Items.Add(lv);
 
                 }
-               
+
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
             }
-         
+
         }
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
@@ -73,40 +64,53 @@ namespace Lanchonete
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try
+
+            if (checkBox1.Checked)
             {
-                // criar objeto da classe usuario
-                Usuario usuario = new Usuario(
-                     textBox1.Text,
-                     email.Text,
-                     textBox3.Text,
-                     maskedTextBox1.Text,
-                     maskedTextBox2.Text);
+                try
+                {
+                    string telefone = maskedTextBox1.Text;
+                    string cpf = maskedTextBox2.Text;
+                    if (new CPFValidator().IsValid(cpf) && new Validador().ValidarTelefone(telefone))
+                    {
+                        MessageBox.Show("CPF válido!");
+                        MessageBox.Show("telefone válido!");
 
-                usuarioDao usuarioDao = new usuarioDao();
-                usuarioDao.InsertUsuario(usuario);
-                MessageBox.Show("Cadastrado com sucesso",
 
-                             "CADASTRADO, BB.",
-                              MessageBoxButtons.OK,
-                              MessageBoxIcon.Information);
+                        Usuario usuario = new Usuario("nome", "email", "senha", "telefone", "cpf");
+                        usuario.Nome = textBox1.Text;
+                        usuario.Email = textBox2.Text;
+                        usuario.Telefone = maskedTextBox1.Text;
+                        usuario.Senha = Criptografia.CriptografarSenha(textBox3.Text);
+                        usuario.Cpf = maskedTextBox2.Text;
 
-                textBox1.Clear();
-                email.Clear();
-                textBox3.Clear();
-                maskedTextBox1.Clear();
-                maskedTextBox2.Clear();
+                        usuarioDao usuarioDao = new usuarioDao();
+                        usuarioDao.InsertUsuario(usuario);
 
-                UpdateListView();
+                        textBox1.Clear();
+                        textBox2.Clear();
+                        textBox3.Clear();
+                        maskedTextBox1.Clear();
+                        maskedTextBox2.Clear();
 
+                        UpdateListView();
+                    }
+                    else
+                    {
+                        MessageBox.Show("CPF inválido ou Telefone inválido");
+
+                    }
+                }
+
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.Message);
+                }
             }
-
-            catch (Exception error)
+            else
             {
-                MessageBox.Show(error.Message);
+                MessageBox.Show("Aceite os termos e condições");
             }
-
-
 
         }
 
@@ -157,38 +161,55 @@ namespace Lanchonete
 
         private void button2_Click(object sender, EventArgs e)
         {
-            try
+            if (checkBox1.Checked)
             {
-                // criar objeto da classe usuario
-                Usuario usuario = new Usuario(
-                    Id, 
-                    textBox1.Text,
-                     email.Text,
-                     textBox3.Text,
-                     maskedTextBox1.Text,
-                     maskedTextBox2.Text);
+                try
+                {
+                    string telefone = maskedTextBox1.Text;
+                    string cpf = maskedTextBox2.Text;
+                    if (new CPFValidator().IsValid(cpf))
+                    {
+                        MessageBox.Show("CPF válido!");
+                    }
+                    else if (new Validador().ValidarTelefone(telefone))
+                    {
+                        MessageBox.Show("Telefone válido!");
 
-                usuarioDao usuarioDao = new usuarioDao();
-                usuarioDao.editarUsuario(usuario);
-               
 
-                textBox1.Clear();
-                email.Clear();
-                textBox3.Clear();
-                maskedTextBox1.Clear();
-                maskedTextBox2.Clear();
+                        Usuario usuario = new Usuario("nome", "email", "senha", "telefone", "cpf");
+                        usuario.Nome = textBox1.Text;
+                        usuario.Email = textBox2.Text;
+                        usuario.Telefone = maskedTextBox1.Text;
+                        usuario.Senha = Criptografia.CriptografarSenha(textBox3.Text);
+                        usuario.Cpf = maskedTextBox2.Text;
 
-                UpdateListView();
+                        usuarioDao usuarioDao = new usuarioDao();
+                        usuarioDao.editarUsuario(usuario);
 
+                        textBox1.Clear();
+                        textBox2.Clear();
+                        textBox3.Clear();
+                        maskedTextBox1.Clear();
+                        maskedTextBox2.Clear();
+
+                        UpdateListView();
+                    }
+                    else
+                    {
+                        MessageBox.Show("CPF inválido ou Telefone inválido");
+
+                    }
+                }
+
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.Message);
+                }
             }
-
-            catch (Exception error)
+            else
             {
-                MessageBox.Show(error.Message);
+                MessageBox.Show("Aceite os termos e condições");
             }
-
-
-            UpdateListView();
 
         }
 
@@ -198,7 +219,7 @@ namespace Lanchonete
             index = listView1.FocusedItem.Index;
             Id = int.Parse(listView1.Items[index].SubItems[0].Text);
             textBox1.Text = (listView1.Items[index].SubItems[1].Text);
-            email.Text = listView1.Items[index].SubItems[2].Text;
+            textBox2.Text = listView1.Items[index].SubItems[2].Text;
             textBox3.Text = listView1.Items[index].SubItems[3].Text;
             maskedTextBox1.Text = listView1.Items[index].SubItems[4].Text;
             maskedTextBox2.Text = listView1.Items[index].SubItems[5].Text;
@@ -212,14 +233,10 @@ namespace Lanchonete
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //Código para excluir
             usuarioDao usuarioDao = new usuarioDao();
             usuarioDao.excluirUsuario(Id);
-         
-            
-            UpdateListView();
-            
 
+            UpdateListView();
         }
 
         private void fileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
